@@ -58,7 +58,7 @@ public class BenutzerVerwalterA {
     }
 
     public void beispielBelegung() {
-        //erzeuge eine neue Liste mit 100 Benutzern
+        //TODO erzeuge eine neue Liste mit 100 Benutzern
     }
 
     private int pinNr(String pPIN) {
@@ -75,26 +75,32 @@ public class BenutzerVerwalterA {
     }
 
     private Benutzer lineareSucheName(String pName) {
+        //TODO lineare Suche nach Benutzer nach Name
         return null;
     }
 
     private Benutzer lineareSuchePIN(String pPIN) {
+        //TODO lineare Suche nach Benutzer nach Pin
         return null;
     }
 
     private Benutzer binaereItSuchePIN(String pSuchPIN) {
+        //TODO binaere Suche nach Benutzer nach Pin
         return null;
     }
 
     private Benutzer binaereRekSuchePIN(String pSuchPIN, int pLinks, int pRechts) {
+        //TODO binaer rekursive Suche nach Benutzer nach Pin
         return null;
     }
 
     public Benutzer suchePIN(String pSuchPIN) {
+        //TODO suche Benutzer nach Pin ohne Vorgabe des Verfahrens
         return null;
     }
 
     public Benutzer sucheBenutzerName(String pName) {
+        //TODO suche Benutzer nach namen ohne Vorgabe des Verfahrens
         return null;
     }
 
@@ -115,7 +121,6 @@ public class BenutzerVerwalterA {
     }
 
     public void sortiereVerbrauch() {
-        //W�hle hier dein Lieblingsverfahren
     }
 
     public void sortiereNamen() {

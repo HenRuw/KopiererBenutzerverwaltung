@@ -15,7 +15,7 @@ public class KopiererVerwaltungGUI extends JFrame {
     private JTextField tfBenutzerID = new JTextField();
     private JTextField tfPin = new JTextField();
     private JButton btId = new JButton();
-    private JButton btPin = new JButton();
+    private JButton btSuchePin = new JButton();
     private JButton btNeuesVerzeichnis = new JButton();
     private JButton btergaenzen = new JButton();
     private JLabel labVersion = new JLabel();
@@ -24,7 +24,7 @@ public class KopiererVerwaltungGUI extends JFrame {
     private JButton btSortname = new JButton();
     private JButton btsortAnzahl = new JButton();
     // Ende Attribute
-    private BenutzerVerwalterA  generator = new BenutzerVerwalterA();
+    private BenutzerVerwalterA verwalter = new BenutzerVerwalterA();
 
     public KopiererVerwaltungGUI(String title) {
         // Frame-Initialisierung
@@ -64,15 +64,15 @@ public class KopiererVerwaltungGUI extends JFrame {
             }
         });
         cp.add(btId);
-        btPin.setBounds(144, 104, 110, 25);
-        btPin.setText("Suche: PIN");
-        btPin.setMargin(new Insets(2, 2, 2, 2));
-        btPin.addActionListener(new ActionListener() {
+        btSuchePin.setBounds(144, 104, 110, 25);
+        btSuchePin.setText("Suche: PIN");
+        btSuchePin.setMargin(new Insets(2, 2, 2, 2));
+        btSuchePin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                btPin_ActionPerformed(evt);
+                btSuchePin_ActionPerformed(evt);
             }
         });
-        cp.add(btPin);
+        cp.add(btSuchePin);
         btNeuesVerzeichnis.setBounds(32, 168, 267, 25);
         btNeuesVerzeichnis.setText("erzeuge Beispieldaten");
         btNeuesVerzeichnis.setMargin(new Insets(2, 2, 2, 2));
@@ -117,14 +117,14 @@ public class KopiererVerwaltungGUI extends JFrame {
         // Ende Komponenten
 
         setVisible(true);
-        labVersion.setText(generator.gibVersion());
+        labVersion.setText(verwalter.gibVersion());
     } // end of public PINGeneratorGUI
 
     // Anfang Methoden
     public void btId_ActionPerformed(ActionEvent evt) {
         String pin, name;
         name = tfBenutzerID.getText();
-        Benutzer b = generator.sucheBenutzerName(name);
+        Benutzer b = verwalter.sucheBenutzerName(name);
         if (b != null) {
             tfPin.setText(b.gibPIN());
         } else {
@@ -132,12 +132,12 @@ public class KopiererVerwaltungGUI extends JFrame {
         }
     } // end of btId_ActionPerformed
 
-    public void btPin_ActionPerformed(ActionEvent evt) {
-        generator.sortierePIN();
-        taTab.setText(generator.erstelleAusgabe());
+    public void btSuchePin_ActionPerformed(ActionEvent evt) {
+        verwalter.sortierePIN();
+        taTab.setText(verwalter.erstelleAusgabe());
         String pin;
         pin = tfPin.getText();
-        Benutzer b = generator.suchePIN(pin);
+        Benutzer b = verwalter.suchePIN(pin);
         if (b != null) {
             tfBenutzerID.setText(b.gibName());
         } else {
@@ -146,29 +146,29 @@ public class KopiererVerwaltungGUI extends JFrame {
     } // end of btPin_ActionPerformed
 
     public void btNeuesVerzeichnis_ActionPerformed(ActionEvent evt) {
-        generator.beispielBelegung();
-        taTab.setText(generator.erstelleAusgabe());
+        verwalter.beispielBelegung();
+        taTab.setText(verwalter.erstelleAusgabe());
 
     } // end of btNeuesVerzeichnis_ActionPerformed
     public void btergaenzen_ActionPerformed(ActionEvent evt) {
         String name = tfBenutzerID.getText();
-        Benutzer b = generator.sucheBenutzerName(name);
+        Benutzer b = verwalter.sucheBenutzerName(name); //currently not working
         if (b == null) {
-            generator.neuerBenutzer(name);
+            verwalter.neuerBenutzer(name);
         } else {
             tfPin.setText("bereits vorhanden");
         }
-        taTab.setText(generator.erstelleAusgabe());
+        taTab.setText(verwalter.erstelleAusgabe());
     } // end of btergaenzen_ActionPerformed
 
     public void btSortname_ActionPerformed(ActionEvent evt) {
-        generator.sortiereNamen();
-        taTab.setText(generator.erstelleAusgabe());
+        verwalter.sortiereNamen();
+        taTab.setText(verwalter.erstelleAusgabe());
     } // end of btSortname_ActionPerformed
 
     public void btsortAnzahl_ActionPerformed(ActionEvent evt) {
-        generator.sortiereVerbrauch();
-        taTab.setText(generator.erstelleAusgabe());
+        verwalter.sortiereVerbrauch();
+        taTab.setText(verwalter.erstelleAusgabe());
     } // end of btsortAnzahl_ActionPerformed
 
     // Ende Methoden

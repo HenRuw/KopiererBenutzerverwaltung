@@ -1,6 +1,8 @@
 package ifl1;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class BenutzerVerwalterA {
 
@@ -11,7 +13,7 @@ public class BenutzerVerwalterA {
 
     public BenutzerVerwalterA() {
         benutzerDaten = new Benutzer[maxBenutzerzahl];
-        Arrays.fill(benutzerDaten, null); //TODO Initialisiere Array mit null-Werten
+        Arrays.fill(benutzerDaten, null);
     }
 
     public String gibVersion() {
@@ -23,7 +25,7 @@ public class BenutzerVerwalterA {
         int zufallszahl = (int) (Math.random()*intervall) + 1;
         maxPIN = maxPIN + zufallszahl;
         String pin = "" + maxPIN;
-        while (pin.length() < 4) { //TODO Vereinfache die Generierung von 4-stelligen PINs
+        while (pin.length() < 4) {
             pin = "0" + pin;
         }
         return pin;
@@ -46,7 +48,7 @@ public class BenutzerVerwalterA {
         } while (vorhanden);
         if (!vorhanden) {
             eintragen(pName,pin);
-            System.out.println(pName+" "+pin+" anzahl: "+aktBenutzerzahl);
+            //System.out.println(pName+" "+pin+" anzahl: "+aktBenutzerzahl);
         }
     }
 
@@ -65,11 +67,12 @@ public class BenutzerVerwalterA {
         int anzahl = (int) (Math.random()*1000);
         neu.erhoeheVerbrauch(anzahl);
         benutzerDaten[aktBenutzerzahl] = neu;
+        //System.out.println((aktBenutzerzahl)+" "+benutzerDaten[aktBenutzerzahl].gibName()+" "+benutzerDaten[aktBenutzerzahl].gibPIN());
         aktBenutzerzahl++;
     }
 
     private Benutzer lineareSucheName(String pName) {
-        for (int i = 0; i < aktBenutzerzahl; i++) { //TODO Implementiere eine lineare Suche nach Benutzer nach Name
+        for (int i = 0; i < aktBenutzerzahl; i++) {
             if (benutzerDaten[i] != null && benutzerDaten[i].gibName().equals(pName)) {
                 return benutzerDaten[i];
             }
@@ -78,7 +81,7 @@ public class BenutzerVerwalterA {
     }
 
     private Benutzer lineareSuchePIN(String pPIN) {
-        for (int i = 0; i < aktBenutzerzahl; i++) { //TODO Implementiere eine lineare Suche nach Benutzer nach Pin
+        for (int i = 0; i < aktBenutzerzahl; i++) {
             if (benutzerDaten[i] != null && benutzerDaten[i].gibPIN().equals(pPIN)) {
                 return benutzerDaten[i];
             }
@@ -92,13 +95,11 @@ public class BenutzerVerwalterA {
     }
 
     public Benutzer suchePIN(String pSuchPIN) {
-        //TODO suche Benutzer nach Pin ohne Vorgabe des Verfahrens
-        return null;
+        return(lineareSuchePIN(pSuchPIN));
     }
 
     public Benutzer sucheBenutzerName(String pName) {
-        //TODO suche Benutzer nach namen ohne Vorgabe des Verfahrens
-        return null;
+        return lineareSucheName(pName);
     }
 
     public String erstelleAusgabe() {
@@ -111,18 +112,111 @@ public class BenutzerVerwalterA {
                 zeile = ""+(i+1)+" ";
             }
             zeile = zeile + "  "+ benutzerDaten[i].gibName();
+
+            if (i < 9) {
+                zeile += "\t";
+            }
+
             zeile = zeile + "\t "+ benutzerDaten[i].gibAnzahl();
+
             ausgabe = ausgabe + zeile + "\n";
         }
         return ausgabe;
     }
-
     public void sortiereVerbrauch() {
-        //TODO Wähle hier dein Lieblingsverfahren
+        final int RADIX = 10;
+
+        // declare and initialize bucket[]
+        List<Benutzer>[] bucket = new ArrayList[RADIX];
+
+        for (int i = 0; i < bucket.length; i++) {
+            bucket[i] = new ArrayList<Benutzer>();
+        }
+
+        // sort
+        boolean maxLength = false;
+        int tmp = -1, placement = 1;
+        while (!maxLength) {
+            maxLength = true;
+
+            // split input between lists
+            for (int j = 0; j < benutzerDaten.length; j++) {
+                Benutzer i = benutzerDaten[j];
+                tmp = i.gibAnzahl() / placement;
+                bucket[tmp % RADIX].add(i);
+                if (maxLength && tmp > 0) {
+                    maxLength = false;
+                }
+            }
+
+            // empty lists into input array
+            int a = 0;
+            for (int b = 0; b < RADIX; b++) {
+                List<Benutzer> benutzerList = bucket[b];
+                for (int j = 0; j < benutzerList.size(); j++) {
+                    Benutzer i = benutzerList.get(j);
+                    benutzerDaten[a++] = i;
+                }
+                bucket[b].clear();
+            }
+
+            // move to next digit
+            placement *= RADIX;
+        }
     }
 
+
     public void sortiereNamen() {
-        //TODO Wähle dein Zweitlieblingsverfahren
+        final int RADIX = 10;
+
+        // declare and initialize bucket[]
+        List<Benutzer>[] bucket = new ArrayList[RADIX];
+
+        for (int i = 0; i < bucket.length; i++) {
+            bucket[i] = new ArrayList<Benutzer>();
+        }
+
+        // sort
+        boolean maxLength = false;
+        int tmp = -1, placement = 1;
+        int index = 0;
+        while (!maxLength) {
+            maxLength = true;
+
+            // split input between lists
+            for (int j = 0; j < aktBenutzerzahl; j++) {
+                Benutzer i = benutzerDaten[j];
+                
+                if (i.gibName().length() > index){
+                    System.out.println((int) i.gibName().charAt(index));
+                    tmp = ((int) i.gibName().charAt(index)) / placement;
+                }
+                else {
+                    tmp = 0;
+                }
+                
+
+                bucket[tmp % RADIX].add(i);
+                if (maxLength && tmp > 0) {
+                    maxLength = false;
+                }
+            }
+
+            // empty lists into input array
+            int a = 0;
+            for (int b = 0; b < RADIX; b++) {
+                List<Benutzer> benutzerList = bucket[b];
+                for (int j = 0; j < benutzerList.size(); j++) {
+                    Benutzer i = benutzerList.get(j);
+                    benutzerDaten[a++] = i;
+                }
+                bucket[b].clear();
+            }
+
+            // move to next digit
+            placement *= RADIX;
+            index++;
+        }
     }
 
     public void sortierePIN() {

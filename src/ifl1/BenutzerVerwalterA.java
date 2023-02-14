@@ -1,5 +1,6 @@
 package ifl1;
 
+import java.util.Arrays;
 
 public class BenutzerVerwalterA {
 
@@ -10,9 +11,7 @@ public class BenutzerVerwalterA {
 
     public BenutzerVerwalterA() {
         benutzerDaten = new Benutzer[maxBenutzerzahl];
-        for (int i = 0; i < benutzerDaten.length; i++) {
-            benutzerDaten[i] = null;
-        }
+        Arrays.fill(benutzerDaten, null); //TODO Initialisiere Array mit null-Werten
     }
 
     public String gibVersion() {
@@ -24,14 +23,8 @@ public class BenutzerVerwalterA {
         int zufallszahl = (int) (Math.random()*intervall) + 1;
         maxPIN = maxPIN + zufallszahl;
         String pin = "" + maxPIN;
-        if (pin.length() == 1) {
-            pin = "000"+pin;
-        }
-        if (pin.length() == 2) {
-            pin = "00"+pin;
-        }
-        if (pin.length() == 3) {
-            pin = "0"+pin;
+        while (pin.length() < 4) { //TODO Vereinfache die Generierung von 4-stelligen PINs
+            pin = "0" + pin;
         }
         return pin;
     }
@@ -53,12 +46,14 @@ public class BenutzerVerwalterA {
         } while (vorhanden);
         if (!vorhanden) {
             eintragen(pName,pin);
-            //TODO System.out.println(pName+" "+pin+" anzahl: "+aktBenutzerzahl);
+            System.out.println(pName+" "+pin+" anzahl: "+aktBenutzerzahl);
         }
     }
 
     public void beispielBelegung() {
-        //TODO erzeuge eine neue Liste mit 100 Benutzern
+        for (int i = 0; i < maxBenutzerzahl; i++) {
+            neuerBenutzer("Benutzer " + (i+1));
+        }
     }
 
     private int pinNr(String pPIN) {
@@ -70,27 +65,29 @@ public class BenutzerVerwalterA {
         int anzahl = (int) (Math.random()*1000);
         neu.erhoeheVerbrauch(anzahl);
         benutzerDaten[aktBenutzerzahl] = neu;
-        System.out.println((aktBenutzerzahl)+" "+benutzerDaten[aktBenutzerzahl].gibName()+" "+benutzerDaten[aktBenutzerzahl].gibPIN());
         aktBenutzerzahl++;
     }
 
     private Benutzer lineareSucheName(String pName) {
-        //TODO lineare Suche nach Benutzer nach Name
+        for (int i = 0; i < aktBenutzerzahl; i++) { //TODO Implementiere eine lineare Suche nach Benutzer nach Name
+            if (benutzerDaten[i] != null && benutzerDaten[i].gibName().equals(pName)) {
+                return benutzerDaten[i];
+            }
+        }
         return null;
     }
 
     private Benutzer lineareSuchePIN(String pPIN) {
-        //TODO lineare Suche nach Benutzer nach Pin
+        for (int i = 0; i < aktBenutzerzahl; i++) { //TODO Implementiere eine lineare Suche nach Benutzer nach Pin
+            if (benutzerDaten[i] != null && benutzerDaten[i].gibPIN().equals(pPIN)) {
+                return benutzerDaten[i];
+            }
+        }
         return null;
     }
 
     private Benutzer binaereItSuchePIN(String pSuchPIN) {
-        //TODO binaere Suche nach Benutzer nach Pin
-        return null;
-    }
-
-    private Benutzer binaereRekSuchePIN(String pSuchPIN, int pLinks, int pRechts) {
-        //TODO binaer rekursive Suche nach Benutzer nach Pin
+        //TODO ---- ab hier ----- binaer rekursive Suche nach Benutzer nach Pin
         return null;
     }
 
@@ -129,7 +126,7 @@ public class BenutzerVerwalterA {
     }
 
     public void sortierePIN() {
-        //TODO Quicksort
+        //Quicksort
         int n = aktBenutzerzahl;
         quicksort(0, n-1);
     }

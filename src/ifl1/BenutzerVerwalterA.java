@@ -53,12 +53,12 @@ public class BenutzerVerwalterA {
         } while (vorhanden);
         if (!vorhanden) {
             eintragen(pName,pin);
-            //System.out.println(pName+" "+pin+" anzahl: "+aktBenutzerzahl);
+            //TODO System.out.println(pName+" "+pin+" anzahl: "+aktBenutzerzahl);
         }
     }
 
     public void beispielBelegung() {
-        //erzeuge eine neue Liste mit 100 Benutzern
+        //TODO erzeuge eine neue Liste mit 100 Benutzern
     }
 
     private int pinNr(String pPIN) {
@@ -115,21 +115,21 @@ public class BenutzerVerwalterA {
     }
 
     public void sortiereVerbrauch() {
-        //W�hle hier dein Lieblingsverfahren
+        //TODO Wähle hier dein Lieblingsverfahren
     }
 
     public void sortiereNamen() {
-        //W�hle dein Zweitlieblingsverfahren
+        //TODO Wähle dein Zweitlieblingsverfahren
     }
 
     public void sortierePIN() {
-        // Quicksort
+        //TODO Quicksort
         int n = aktBenutzerzahl;
         quicksort(0, n-1);
     }
 
     private void quicksort (int lo, int hi) {
-        //muss noch implementiert werden
+        //TODO muss noch implementiert werden
     }
 
     private void tausche(int i, int j) {

@@ -89,17 +89,29 @@ public class BenutzerVerwalterA {
         return null;
     }
 
-    private Benutzer binaereItSuchePIN(String pSuchPIN) {
-        //TODO ---- ab hier ----- binaer rekursive Suche nach Benutzer nach Pin
-        return null;
+    private Benutzer binaereItSuchePIN(String pSuchPIN, int pLinks, int pRechts) {
+        sortierePIN();
+        int mitte = (pRechts+pLinks)/2;
+        int compared = pSuchPIN.compareTo(benutzerDaten[mitte].gibPIN());
+
+        if (pLinks==pRechts){
+            if(compared == 0) return benutzerDaten[mitte];
+            return null;
+        }
+
+        return switch (compared) {
+            case 0 -> benutzerDaten[mitte];
+            case -1 -> binaereItSuchePIN(pSuchPIN, pLinks, mitte - 1);
+            default -> binaereItSuchePIN(pSuchPIN, mitte + 1, pRechts);
+        };
     }
 
     public Benutzer suchePIN(String pSuchPIN) {
-        return(lineareSuchePIN(pSuchPIN));
+        return(binaereItSuchePIN(pSuchPIN,0,benutzerDaten.length));
     }
 
     public Benutzer sucheBenutzerName(String pName) {
-        return lineareSucheName(pName);
+        return(lineareSucheName(pName));
     }
 
     public String erstelleAusgabe() {

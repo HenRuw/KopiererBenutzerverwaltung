@@ -90,7 +90,7 @@ public class BenutzerVerwalterA {
     }
 
     private Benutzer binaereItSuchePIN(String pSuchPIN, int pLinks, int pRechts) {
-        sortierePIN();
+
         int mitte = (pRechts+pLinks)/2;
         int compared = pSuchPIN.compareTo(benutzerDaten[mitte].gibPIN());
 
@@ -107,6 +107,7 @@ public class BenutzerVerwalterA {
     }
 
     public Benutzer suchePIN(String pSuchPIN) {
+        sortierePIN();
         return(binaereItSuchePIN(pSuchPIN,0,benutzerDaten.length));
     }
 
@@ -152,7 +153,7 @@ public class BenutzerVerwalterA {
             maxLength = true;
 
             // split input between lists
-            for (int j = 0; j < benutzerDaten.length; j++) {
+            for (int j = 0; j < aktBenutzerzahl; j++) {
                 Benutzer i = benutzerDaten[j];
                 tmp = i.gibAnzahl() / placement;
                 bucket[tmp % RADIX].add(i);
@@ -179,7 +180,7 @@ public class BenutzerVerwalterA {
 
 
     public void sortiereNamen() {
-        final int RADIX = 10;
+        final int RADIX = 256; // 256 Zeichen im ASCII-Code
 
         // declare and initialize bucket[]
         List<Benutzer>[] bucket = new ArrayList[RADIX];
@@ -190,7 +191,7 @@ public class BenutzerVerwalterA {
 
         // sort
         boolean maxLength = false;
-        int tmp = -1, placement = 1;
+        int placement = 1;
         int index = 0;
         while (!maxLength) {
             maxLength = true;
@@ -198,25 +199,23 @@ public class BenutzerVerwalterA {
             // split input between lists
             for (int j = 0; j < aktBenutzerzahl; j++) {
                 Benutzer i = benutzerDaten[j];
-                
+
                 if (i.gibName().length() > index){
-                    System.out.println((int) i.gibName().charAt(index));
-                    tmp = ((int) i.gibName().charAt(index)) / placement;
+                    int tmp = i.gibName().charAt(i.gibName().length() - 1 - index);
+                    bucket[tmp].add(i);
+                    if (maxLength && i.gibName().length() - 1 - index > 0) {
+                        maxLength = false;
+                    }
                 }
                 else {
-                    tmp = 0;
-                }
-                
-
-                bucket[tmp % RADIX].add(i);
-                if (maxLength && tmp > 0) {
-                    maxLength = false;
+                    bucket[0].add(i);
                 }
             }
 
             // empty lists into input array
             int a = 0;
             for (int b = 0; b < RADIX; b++) {
+
                 List<Benutzer> benutzerList = bucket[b];
                 for (int j = 0; j < benutzerList.size(); j++) {
                     Benutzer i = benutzerList.get(j);
@@ -230,6 +229,7 @@ public class BenutzerVerwalterA {
             index++;
         }
     }
+
 
     public void sortierePIN() {
         //Quicksort
